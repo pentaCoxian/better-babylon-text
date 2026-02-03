@@ -19,7 +19,7 @@ betterText provides crisp, scalable text rendering in Babylon.js 3D scenes using
 ## Installation
 
 ```bash
-npm install https://github.com/pentaCoxian/better-babylon-text/releases/download/v0.1.2/bettertext-babylon-tmp-text-v0.1.2.tgz
+npm install https://github.com/pentaCoxian/better-babylon-text/releases/download/v0.1.3/bettertext-babylon-tmp-text-v0.1.3.tgz
 ```
 
 **Peer Dependencies:**
@@ -28,26 +28,27 @@ npm install https://github.com/pentaCoxian/better-babylon-text/releases/download
 ## Quick Start
 
 ```typescript
-import { TmpTextSystem } from '@bettertext/babylon-tmp-text';
+import { TmpTextSystem, TmpTextSystemOptions } from '@bettertext/babylon-tmp-text';
 import { Scene } from '@babylonjs/core';
 
-// Initialize the text system
-const textSystem = new TmpTextSystem(scene);
-
-// Load a font pack
-await textSystem.loadFontPack('fonts/roboto/manifest.json');
+// Initialize the text system (constructor is private, use CreateAsync)
+const options: TmpTextSystemOptions = {
+  fonts: ['fonts/roboto/manifest.json'],
+  autoAttach: true,
+};
+const textSystem = await TmpTextSystem.CreateAsync(scene, options);
 
 // Create a text label
 const label = textSystem.createLabel({
   text: 'Hello, World!',
   sizePx: 48,
-  color: [1, 1, 1, 1], // RGBA
-  position: [0, 2, 0],
+  color: { r: 1, g: 1, b: 1, a: 1 }, // RGBA object
+  position: { x: 0, y: 2, z: 0 },
 });
 
 // Update text reactively
 label.text = 'Updated text!';
-label.color = [1, 0, 0, 1]; // Change to red
+label.color = { r: 1, g: 0, b: 0, a: 1 }; // Change to red
 ```
 
 ## API Reference
@@ -57,29 +58,39 @@ label.color = [1, 0, 0, 1]; // Change to red
 The main entry point for the text rendering system.
 
 ```typescript
-const textSystem = new TmpTextSystem(scene: Scene);
+// Create with static async factory method
+const options: TmpTextSystemOptions = {
+  fonts: ['fonts/roboto/manifest.json'], // Font manifest URLs to load
+  autoAttach: true,                       // Auto-attach to scene render loop
+};
+const textSystem = await TmpTextSystem.CreateAsync(scene, options);
 ```
 
 **Methods:**
 
 | Method | Description |
 |--------|-------------|
-| `loadFontPack(url: string)` | Load a font pack from a manifest URL |
-| `createLabel(options: LabelOptions)` | Create a new text label |
-| `removeLabel(label: TextLabel)` | Remove a label from the scene |
-| `getStats()` | Get performance statistics |
+| `createLabel(options: TextLabelOptions)` | Create a new text label |
+| `removeLabel(label: ITextLabel)` | Remove a label from the scene |
+| `loadFonts(manifestUrls: string[])` | Load additional font packs |
+| `render(camera: Camera)` | Render text (called automatically if autoAttach is true) |
+| `attachToScene(scene, cameraProvider?)` | Attach to scene render loop |
+| `detachFromScene()` | Detach from scene render loop |
+| `getStats()` | Get performance statistics (returns `Map<string, AllocatorStats>`) |
+| `flush()` | Flush pending updates |
+| `compact()` | Compact GPU buffers to reduce fragmentation |
 | `dispose()` | Clean up all resources |
 
-### TextLabel
+### ITextLabel
 
-Individual text labels created by the system.
+Individual text labels created by the system (implements `ITextLabel` interface).
 
 **Core Properties:**
 
 | Property | Type | Description |
 |----------|------|-------------|
 | `text` | `string` | The text content to display |
-| `color` | `[r, g, b, a]` | Text color (0-1 range) |
+| `color` | `{ r, g, b, a }` | Text color (0-1 range, IColor4Like) |
 | `sizePx` | `number` | Font size in pixels |
 | `maxWidth` | `number` | Maximum width before wrapping |
 | `align` | `'left' \| 'center' \| 'right'` | Text alignment |
@@ -89,17 +100,17 @@ Individual text labels created by the system.
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `position` | `[x, y, z]` | World position |
-| `rotation` | `[x, y, z]` | Euler rotation (radians) |
-| `scale` | `[x, y, z]` | Scale factor |
+| `position` | `{ x, y, z }` | World position (Position3) |
+| `rotation` | `{ x, y, z }` | Euler rotation in radians (Rotation3) |
+| `scale` | `{ x, y, z }` | Scale factor (Scale3) |
 | `parent` | `TransformNode \| null` | Parent node for hierarchy |
-| `worldMatrix` | `Matrix` | Computed world transformation |
+| `worldMatrix` | `IMatrixLike` | Computed world transformation (read-only) |
 
 **Stroke Properties:**
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `strokeColor` | `[r, g, b, a]` | Outline color |
+| `strokeColor` | `{ r, g, b, a }` | Outline color (IColor4Like) |
 | `strokeWidth` | `number` | Outline thickness |
 | `strokeInsetWidth` | `number` | Inset outline thickness |
 
@@ -110,14 +121,30 @@ Individual text labels created by the system.
 | `lineHeight` | `number` | Line height multiplier |
 | `letterSpacing` | `number` | Character spacing |
 
+**Other Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `billboard` | `BillboardMode` | Billboard mode for screen-facing text |
+| `isDirty` | `boolean` | Whether the label needs update (read-only) |
+| `characterCount` | `number` | Number of characters rendered (read-only) |
+
+**Methods:**
+
+| Method | Description |
+|--------|-------------|
+| `forceUpdate()` | Force the label to update |
+| `getBounds()` | Get the label's bounding box `{ width, height }` |
+| `dispose()` | Dispose the label |
+
 **Billboard Modes:**
 
 ```typescript
 import { BillboardMode } from '@bettertext/babylon-tmp-text';
 
-label.billboardMode = BillboardMode.None;              // No billboarding
-label.billboardMode = BillboardMode.Billboard;         // Face camera
-label.billboardMode = BillboardMode.BillboardScreenProjected; // Screen-space projection
+label.billboard = BillboardMode.None;              // No billboarding
+label.billboard = BillboardMode.Billboard;         // Face camera
+label.billboard = BillboardMode.BillboardScreenProjected; // Screen-space projection
 ```
 
 ## Font Preparation
