@@ -5,9 +5,10 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "npm run build --workspaces",
-    "dev:demo": "npm run dev --workspace=@bettertext/babylon-tmp-text-demo",
-    "build:runtime": "npm run build --workspace=@bettertext/babylon-tmp-text"
+    "build": "npm run build:runtime && npm run build:demo",
+    "build:runtime": "npm run build --workspace=@bettertext/babylon-tmp-text",
+    "build:demo": "npm run build --workspace=@bettertext/babylon-tmp-text-demo",
+    "dev:demo": "npm run dev --workspace=@bettertext/babylon-tmp-text-demo"
   },
   "devDependencies": {}
 }

@@ -26,11 +26,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
-        run: npm run build
+      - name: Build runtime
+        run: npm run build:runtime
 
       - name: Run tests
         run: npm test --workspace=@bettertext/babylon-tmp-text --if-present
 
       - name: Type check
         run: npm run typecheck --workspace=@bettertext/babylon-tmp-text --if-present
+
+      - name: Build demo
+        run: npm run build:demo
