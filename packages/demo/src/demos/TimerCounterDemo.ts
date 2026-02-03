@@ -24,7 +24,6 @@ Watch how only changed labels trigger GPU updates.`;
   private _counterLabel!: ITextLabel;
   private _fpsLabel!: ITextLabel;
   private _clockLabel!: ITextLabel;
-  private _titleLabel!: ITextLabel;
 
   private _elapsed = 0;
   private _counter = 0;
@@ -40,7 +39,7 @@ Watch how only changed labels trigger GPU updates.`;
     this._lastSecond = -1;
 
     // Title label
-    this._titleLabel = scene.createLabel({
+    scene.createLabel({
       text: "Dynamic Text Updates",
       sizePx: 56,
       color: { r: 1, g: 1, b: 1, a: 1 },

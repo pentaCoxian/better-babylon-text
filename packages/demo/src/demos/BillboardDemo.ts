@@ -33,10 +33,9 @@ Rotate the camera to observe differences!`;
   private _meshes: Mesh[] = [];
   private _labels: ITextLabel[] = [];
   private _time = 0;
-  private _scene!: DemoScene;
 
-  async setup(scene: DemoScene): Promise<void> {
-    this._scene = scene;
+  async setup(_scene: DemoScene): Promise<void> {
+    const scene = _scene;
     this._meshes = [];
     this._labels = [];
     this._time = 0;

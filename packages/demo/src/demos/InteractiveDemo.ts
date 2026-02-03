@@ -22,7 +22,6 @@ User-driven text updates:
 Demonstrates immediate reactive updates.`;
 
   private _mainLabel!: ITextLabel;
-  private _instructionLabel!: ITextLabel;
   private _uiContainer: HTMLDivElement | null = null;
 
   private _currentText = "Hello World!";
@@ -46,7 +45,7 @@ Demonstrates immediate reactive updates.`;
     });
 
     // Instruction label
-    this._instructionLabel = scene.createLabel({
+    scene.createLabel({
       text: "Use the controls below",
       sizePx: 24,
       color: { r: 0.6, g: 0.6, b: 0.6, a: 1 },
