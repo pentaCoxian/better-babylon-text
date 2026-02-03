@@ -19,7 +19,7 @@ betterText provides crisp, scalable text rendering in Babylon.js 3D scenes using
 ## Installation
 
 ```bash
-npm install https://github.com/pentaCoxian/better-babylon-text/releases/download/v0.1.2/bettertext-babylon-tmp-text-v0.1.2.tar.gz
+npm install https://github.com/pentaCoxian/better-babylon-text/releases/download/v0.1.2/bettertext-babylon-tmp-text-v0.1.2.tgz
 ```
 
 **Peer Dependencies:**

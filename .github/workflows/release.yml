@@ -30,11 +30,14 @@ jobs:
       - name: Run tests
         run: npm test --workspace=@bettertext/babylon-tmp-text --if-present
 
-      - name: Package dist
-        run: tar -czvf bettertext-babylon-tmp-text-${{ github.ref_name }}.tar.gz -C packages/runtime/dist .
+      - name: Package for npm
+        run: |
+          cd packages/runtime
+          npm pack
+          mv *.tgz ../../bettertext-babylon-tmp-text-${{ github.ref_name }}.tgz
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
-          files: bettertext-babylon-tmp-text-${{ github.ref_name }}.tar.gz
+          files: bettertext-babylon-tmp-text-${{ github.ref_name }}.tgz
