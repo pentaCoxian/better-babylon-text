@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Text Demo - @bettertext/babylon-tmp-text</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        overflow: hidden;
+        font-family: system-ui, -apple-system, sans-serif;
+        background: #1a1a2e;
+      }
+      #renderCanvas {
+        width: 100vw;
+        height: 100vh;
+        display: block;
+        touch-action: none;
+      }
+      #ui-container {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-width: 320px;
+      }
+      #demo-selector {
+        background: rgba(0, 0, 0, 0.85);
+        color: white;
+        padding: 15px;
+        border-radius: 8px;
+        backdrop-filter: blur(10px);
+      }
+      #demo-selector h3 {
+        margin-bottom: 10px;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #888;
+      }
+      #demo-selector select {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border: none;
+        border-radius: 6px;
+        background: #2a2a4a;
+        color: white;
+        cursor: pointer;
+      }
+      #demo-selector select:focus {
+        outline: 2px solid #4a90d9;
+      }
+      #stats-panel {
+        background: rgba(0, 0, 0, 0.85);
+        color: #0f0;
+        padding: 15px;
+        border-radius: 8px;
+        font-family: "Consolas", "Monaco", monospace;
+        font-size: 12px;
+        min-width: 220px;
+        backdrop-filter: blur(10px);
+      }
+      #stats-panel .label {
+        color: #888;
+      }
+      #stats-panel .value {
+        color: #0f0;
+        font-weight: bold;
+      }
+      #stats-panel hr {
+        border: none;
+        border-top: 1px solid #333;
+        margin: 8px 0;
+      }
+      #description {
+        background: rgba(0, 0, 0, 0.85);
+        color: #ccc;
+        padding: 15px;
+        border-radius: 8px;
+        font-size: 13px;
+        line-height: 1.6;
+        backdrop-filter: blur(10px);
+        white-space: pre-line;
+      }
+      #description strong {
+        color: #fff;
+        display: block;
+        margin-bottom: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="renderCanvas"></canvas>
+    <div id="ui-container">
+      <div id="demo-selector">
+        <h3>Select Demo</h3>
+        <select id="demo-select"></select>
+      </div>
+      <div id="stats-panel">Loading...</div>
+      <div id="description"></div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

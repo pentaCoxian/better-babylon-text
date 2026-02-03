@@ -1,0 +1,73 @@
+{
+  "name": "@bettertext/babylon-tmp-text",
+  "version": "0.1.0",
+  "description": "TMP-like retained-mode text rendering for Babylon.js with MSDF",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./vendor/msdfText": {
+      "import": {
+        "types": "./dist/vendor/msdfText/index.d.ts",
+        "default": "./dist/vendor/msdfText/index.js"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": [
+    "./dist/vendor/msdfText/shaders/**/*",
+    "./dist/vendor/msdfText/shadersWGSL/**/*"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "build:types": "tsc --emitDeclarationOnly",
+    "dev": "tsup --watch",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint src --ext .ts",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "peerDependencies": {
+    "@babylonjs/core": "^7.0.0 || ^8.0.0"
+  },
+  "devDependencies": {
+    "@babylonjs/core": "^8.0.0",
+    "@types/node": "^20.0.0",
+    "rimraf": "^5.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0"
+  },
+  "keywords": [
+    "babylonjs",
+    "babylon",
+    "msdf",
+    "text",
+    "rendering",
+    "webgl",
+    "webgpu",
+    "tmp",
+    "text-mesh-pro"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
